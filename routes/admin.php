@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/login','AdminController@showLogin')->name('admin.login');
-Route::post('/login','AdminController@Login');
+Route::post('/login','AdminController@login');
 
 Route::middleware('auth.admin:admin')->get('/dashboard','AdminController@index');
+Route::middleware('auth.admin:admin')->any('/logout','AdminController@logout');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -13,16 +14,27 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function showLogin(){
+        if(Auth::guard('admin')->check()){
+            return redirect()->intended('admin/dashboard');
+        }
         return view('admin_login');
     }
-    public function Login(Request $req){
-        dd($req->all());
+    public function login(Request $req){
+        if (Auth::guard('admin')->attempt(['email' => $req->email, 'password' => $req->password])) {
+            // 認證通過...
+            return redirect('admin/dashboard');
+        }
+    }
+    public function logout(Request $req){
+        Auth::guard('admin')->logout();
+        return redirect('admin/login');
     }
 
 
     public function index()
     {
-        dd('dashboard');
+        dd('dashboard11');
+        
     }
 
     /**
