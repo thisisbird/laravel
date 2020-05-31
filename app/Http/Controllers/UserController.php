@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AdminController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,29 +13,29 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function showLogin(){
-        if(Auth::guard('admin')->check()){
-            return redirect()->intended('admin/dashboard');
+        if(Auth::guard('web')->check()){
+            return redirect('/');
         }
         return view('admin_login');
     }
     public function login(Request $req){
-        if (Auth::guard('admin')->attempt(['email' => $req->email, 'password' => $req->password])) {
+        if (Auth::guard('web')->attempt(['email' => $req->email, 'password' => $req->password])) {
             // 認證通過...
-            return redirect('admin/dashboard');
+            return redirect('/');
         }else{
             $msg = ['email or password wrong'];
             return redirect()->back()->withErrors($msg)->withInput();
         }
     }
     public function logout(Request $req){
-        Auth::guard('admin')->logout();
-        return redirect('admin/login');
+        Auth::guard('web')->logout();
+        return redirect('login');
     }
 
 
     public function index()
     {
-        dd('dashboard11');
+        dd('index');
         
     }
 

@@ -42,7 +42,7 @@
                   <form class="user" action="login" method="POST">
                     @csrf
                     <div class="form-group">
-                      <input type="email" name="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                      <input type="email" name="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." value="{{ old('email') }}">
                     </div>
                     <div class="form-group">
                       <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
@@ -53,6 +53,9 @@
                         <label class="custom-control-label" for="customCheck">Remember Me</label>
                       </div>
                     </div>
+                    @if($errors->first())
+                    <span class="text-danger">{{$errors->first() ?? 'afaffaf'}}</span>
+                    @endif
                     <button type="submit" class="btn btn-primary btn-user btn-block">
                       Login
                     </button>
