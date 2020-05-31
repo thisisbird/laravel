@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', function () {
-    return view('admin_login');
-});
+
+Route::get('/login','AdminController@showLogin')->name('admin.login');
+Route::post('/login','AdminController@Login');
+
+Route::middleware('auth.admin:admin')->get('/dashboard','AdminController@index');

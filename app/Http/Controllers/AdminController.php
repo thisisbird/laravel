@@ -12,9 +12,17 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function showLogin(){
+        return view('admin_login');
+    }
+    public function Login(Request $req){
+        dd($req->all());
+    }
+
+
     public function index()
     {
-        //
+        dd('dashboard');
     }
 
     /**
