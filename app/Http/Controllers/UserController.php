@@ -19,7 +19,8 @@ class UserController extends Controller
         return view('admin_login');
     }
     public function login(Request $req){
-        if (Auth::guard('web')->attempt(['email' => $req->email, 'password' => $req->password])) {
+        $remember = @$req->remember == 'on' ? true : false;
+        if (Auth::guard('web')->attempt(['email' => $req->email, 'password' => $req->password],$remember)) {
             // 認證通過...
             return redirect('/');
         }else{

@@ -20,7 +20,8 @@ class AdminController extends Controller
         return view('admin_login');
     }
     public function login(Request $req){
-        if (Auth::guard('admin')->attempt(['email' => $req->email, 'password' => $req->password])) {
+        $remember = @$req->remember == 'on' ? true : false;
+        if (Auth::guard('admin')->attempt(['email' => $req->email, 'password' => $req->password],$remember)) {
             // 認證通過...
             return redirect('admin/dashboard');
         }else{
@@ -36,8 +37,7 @@ class AdminController extends Controller
 
     public function index()
     {
-        dd('dashboard11');
-        
+        return view('admin_index');
     }
 
     /**
@@ -47,7 +47,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.register');
     }
 
     /**
@@ -58,7 +58,8 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $a = $request->all();
+        dd($a);
     }
 
     /**
