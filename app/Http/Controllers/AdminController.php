@@ -13,6 +13,13 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected $model;
+
+    public function __construct(Admin $admin)
+    {
+        $this->model = $admin;
+    }
+
     public function showLogin(){
         if(Auth::guard('admin')->check()){
             return redirect()->intended('admin/dashboard');
@@ -45,44 +52,22 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('admin.register');
+        if ($request->isMethod('post')) {
+            $o_req = $request->request->all();
+            $validator = $this->validator($o_req);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+            $o_req['password'] = bcrypt($o_req['password']);
+            $this->model->create($o_req);
+            return redirect('admin/login')->with('msg','success');
+        }
+        $cols = $this->model->getFillable();
+        return view('admin.register',compact('cols'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $a = $request->all();
-        dd($a);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Admin  $admin
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Admin  $admin
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Admin $admin)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -91,9 +76,21 @@ class AdminController extends Controller
      * @param  \App\Admin  $admin
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Admin $admin)
+    public function update(Request $request,$id)
     {
-        //
+        if ($request->isMethod('post')) {
+            $o_req = $request->request->all();
+            $validator = $this->validator($o_req,$id);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+            $o_req['password'] = bcrypt($o_req['password']);
+            $this->model->find($id)->update($o_req);
+            return redirect('admin/login')->with('msg','success');
+        }
+        $cols = $this->model->getFillable();
+        $data = $this->model->find($id);
+        return view('admin.register',compact('cols','data'));
     }
 
     /**
@@ -102,8 +99,22 @@ class AdminController extends Controller
      * @param  \App\Admin  $admin
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Admin $admin)
+    public function destroy($id)
     {
         //
     }
+    function validator($req,$id = null){
+
+        $rules = array(
+            'name' => 'required',
+            'email' => 'required|email|unique:admins,email,'.$id,//unique:table,欄位,排除的id
+            'password' => 'required|between:6,12',
+        );
+        $message = array(
+            'sex.required' => '性別為必填',
+        );
+        return \Validator::make($req, $rules, $message);
+       
+    }
+    
 }

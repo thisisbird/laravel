@@ -56,6 +56,7 @@
                     @if($errors->first())
                     <span class="text-danger">{{$errors->first() ?? 'afaffaf'}}</span>
                     @endif
+                    <span class="text-success">{{session('msg') ?? ''}}</span>
                     <button type="submit" class="btn btn-primary btn-user btn-block">
                       Login
                     </button>
@@ -72,7 +73,7 @@
                     <a class="small" href="forgot-password.html">Forgot Password?</a>
                   </div>
                   <div class="text-center">
-                    <a class="small" href="register.html">Create an Account!</a>
+                    <a class="small" href="/admin/register">Create an Account!</a>
                   </div>
                 </div>
               </div>
