@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -36,17 +35,17 @@
               </div>
               <form class="user" action="" method="POST">
                 @csrf
-                @foreach ($cols as $col)
+                @foreach ($cols as $col => $type)
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="text" class="form-control form-control-user" placeholder="{{$col}}" name="{{$col}}" value="{{ $data->$col ?? old($col) }}">
+                    <input type="{{$type}}" class="form-control form-control-user" placeholder="{{$col}}" name="{{$col}}" value="{{ $data[$col] ?? old($col) }}">
                   </div>
                 </div>
                 @endforeach
                 
                 <div class="form-group row">
                   <div class="col-sm-6">
-                    <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password">
+                    <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password" name="password_confirmation">
                   </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-user btn-block">

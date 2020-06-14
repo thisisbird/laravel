@@ -14,12 +14,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/login','AdminController@showLogin')->name('admin.login');
-Route::post('/login','AdminController@login');
-
+Route::any('/login','AdminController@login')->name('admin.login');
 Route::any('/register','AdminController@create');
-Route::middleware('auth.admin:admin')->any('/register/update/{id}','AdminController@update');
 
-Route::middleware('auth.admin:admin')->get('/dashboard','AdminController@index');
-Route::middleware('auth.admin:admin')->get('/','AdminController@index');
-Route::middleware('auth.admin:admin')->any('/logout','AdminController@logout');
+//後台登入
+Route::group(['middleware' => ['auth.admin:admin']], function () {
+
+    Route::any('/register/update/{id}','AdminController@update');
+    Route::get('/dashboard','AdminController@index');
+    Route::get('/','AdminController@index');
+    Route::any('/logout','AdminController@logout');
+
+    Route::any('/item','ItemController@create');
+
+});

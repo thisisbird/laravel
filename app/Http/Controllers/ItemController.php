@@ -6,7 +6,7 @@ use App\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AdminController extends Controller
+class ItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,29 +19,6 @@ class AdminController extends Controller
     {
         $this->model = $admin;
     }
-
-    public function login(Request $request){
-        if ($request->isMethod('post')) {
-            $remember = @$request->remember == 'on' ? true : false;
-            if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password],$remember)) {
-                // 認證通過...
-                return redirect('admin/dashboard');
-            }else{
-                $msg = ['email or password wrong'];
-                return redirect()->back()->withErrors($msg)->withInput();
-            }
-        }
-
-        if(Auth::guard('admin')->check()){
-            return redirect()->intended('admin/dashboard');
-        }
-        return view('admin_login');
-    }
-    public function logout(Request $req){
-        Auth::guard('admin')->logout();
-        return redirect('admin/login');
-    }
-
 
     public function index()
     {
@@ -65,8 +42,8 @@ class AdminController extends Controller
             $this->model->create($o_req);
             return redirect('admin/login')->with('msg','success');
         }
-        $cols = $this->model->getCol();
-        return view('admin.register',compact('cols'));
+        $cols = $this->model->getFillable();
+        return view('admin.item_form',compact('cols'));
     }
 
 
@@ -95,7 +72,7 @@ class AdminController extends Controller
         }
         $cols = $this->model->getCol();
         $data = $this->model->findOrFail($id)->toArray();
-        return view('admin.register',compact('cols','data'));
+        return view('admin.item_form',compact('cols','data'));
     }
 
     /**

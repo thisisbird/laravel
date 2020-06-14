@@ -16,9 +16,9 @@ class Admin extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password'
     ];
-
+    public $type = ['text','text','password'];
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -36,4 +36,7 @@ class Admin extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function getCol(){
+        return array_combine($this->fillable,$this->type);
+    }
 }
