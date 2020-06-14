@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class Admin extends Authenticatable
+class Item extends Model
 {
     use Notifiable;
     // protected $table = 'admins';
@@ -16,16 +16,15 @@ class Admin extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password'
+        'name', 'picture', 'price','shopping','description'
     ];
-    protected $type = ['text','text','password'];
+    protected $type = ['text','text','number','checkbox','textarea'];
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
     ];
 
     /**
@@ -34,9 +33,23 @@ class Admin extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
     ];
     public function getCol(){
         return array_combine($this->fillable,$this->type);
+    }
+    public function validator($req,$id = null){
+        $rules = array(
+            'name' => 'required',
+            'price' => 'required|numeric',
+            'shopping' => 'boolean',
+        );
+        $message = array(
+            // 'sex.required' => '性別為必填',
+        );
+        $v = \Validator::make($req, $rules, $message);
+        // $v->sometimes('password', 'confirmed|required|between:6,12', function($input) {
+        //     return $input->password != null;
+        // });
+        return $v;
     }
 }

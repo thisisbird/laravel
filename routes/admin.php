@@ -25,6 +25,9 @@ Route::group(['middleware' => ['auth.admin:admin']], function () {
     Route::get('/','AdminController@index');
     Route::any('/logout','AdminController@logout');
 
-    Route::any('/item','ItemController@create');
+
+    Route::get('/item','ItemController@index');
+    Route::any('/item/create','ItemController@create');
+    Route::any('/item/update/{id}','ItemController@update');
 
 });

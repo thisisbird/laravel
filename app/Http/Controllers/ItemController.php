@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Admin;
+use App\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,15 +14,19 @@ class ItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     protected $model;
+    protected $redirect;
 
-    public function __construct(Admin $admin)
+    public function __construct(Item $m)
     {
-        $this->model = $admin;
+        $this->model = $m;
+        $this->redirect = '/admin/item';
     }
 
     public function index()
     {
-        return view('admin_index');
+        $datas = $this->model->get()->toArray();
+        $cols = $this->model->getCol();
+        return view('admin.item_index',compact('datas','cols'));
     }
 
     /**
@@ -34,15 +38,14 @@ class ItemController extends Controller
     {
         if ($request->isMethod('post')) {
             $o_req = $request->request->all();
-            $validator = $this->validator($o_req);
+            $validator = $this->model->validator($o_req);
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
-            $o_req['password'] = bcrypt($o_req['password']);
             $this->model->create($o_req);
-            return redirect('admin/login')->with('msg','success');
+            return redirect($this->redirect)->with('msg','success');
         }
-        $cols = $this->model->getFillable();
+        $cols = $this->model->getCol();
         return view('admin.item_form',compact('cols'));
     }
 
@@ -58,17 +61,12 @@ class ItemController extends Controller
     {
         if ($request->isMethod('post')) {
             $o_req = $request->request->all();
-            $validator = $this->validator($o_req,$id);
+            $validator = $this->model->validator($o_req,$id);
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
-            if($o_req['password']){
-                $o_req['password'] = bcrypt($o_req['password']);
-            }else{
-                unset($o_req['password']);
-            }
             $this->model->findOrFail($id)->update($o_req);
-            return redirect('admin/login')->with('msg','success');
+            return redirect($this->redirect)->with('msg','success');
         }
         $cols = $this->model->getCol();
         $data = $this->model->findOrFail($id)->toArray();
@@ -85,20 +83,6 @@ class ItemController extends Controller
     {
         //
     }
-    function validator($req,$id = null){
-        $rules = array(
-            'name' => 'required',
-            'email' => 'required|email|unique:admins,email,'.$id,//unique:table,欄位,排除的id
-        );
-        $message = array(
-            'sex.required' => '性別為必填',
-        );
-        $v = \Validator::make($req, $rules, $message);
-        $v->sometimes('password', 'confirmed|required|between:6,12', function($input) {
-            return $input->password != null;
-        });
-        return $v;
-       
-    }
+    
     
 }

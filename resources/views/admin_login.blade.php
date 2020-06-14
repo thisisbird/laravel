@@ -54,7 +54,7 @@
                       </div>
                     </div>
                     @if($errors->first())
-                    <span class="text-danger">{{$errors->first() ?? 'afaffaf'}}</span>
+                    <span class="text-danger">{{$errors->first() ?? ''}}</span>
                     @endif
                     <span class="text-success">{{session('msg') ?? ''}}</span>
                     <button type="submit" class="btn btn-primary btn-user btn-block">
