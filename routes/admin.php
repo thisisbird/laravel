@@ -29,5 +29,6 @@ Route::group(['middleware' => ['auth.admin:admin']], function () {
     Route::get('/item','ItemController@index');
     Route::any('/item/create','ItemController@create');
     Route::any('/item/update/{id}','ItemController@update');
+    Route::delete('/item/delete/{id}','ItemController@destroy');
 
 });

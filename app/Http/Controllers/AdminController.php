@@ -35,7 +35,7 @@ class AdminController extends Controller
         if(Auth::guard('admin')->check()){
             return redirect()->intended('admin/dashboard');
         }
-        return view('admin_login');
+        return view('admin.admin_login');
     }
     public function logout(Request $req){
         Auth::guard('admin')->logout();
@@ -45,7 +45,7 @@ class AdminController extends Controller
 
     public function index()
     {
-        return view('admin_index');
+        return view('admin.admin_index');
     }
 
     /**

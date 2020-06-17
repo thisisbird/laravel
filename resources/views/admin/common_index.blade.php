@@ -10,7 +10,7 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3">
       {{-- <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6> --}}
-      <a href="/admin/item/create" class="btn btn-primary btn-icon-split">
+      <a href="item/create" class="btn btn-primary btn-icon-split">
         <span class="icon text-white-50">
           <i class="fas fa-plus"></i>
         </span>
@@ -47,7 +47,7 @@
                   <a href="item/update/{{$data['id']}}" class="btn btn-warning btn-circle btn-sm">
                     <i class="fas fa-pen"></i>
                   </a>
-                  <a href="#" class="btn btn-danger btn-circle btn-sm">
+                  <a href="#" class="btn btn-danger btn-circle btn-sm" onclick="del(this,{{$data['id']}})">
                     <i class="fas fa-trash"></i>
                   </a>
                 </th>
@@ -67,4 +67,34 @@
 
 <!-- Page level custom scripts -->
 <script src="/admin2/js/demo/datatables-demo.js"></script>    
+<script>
+
+function del(obj,id) { 
+  var msg = "您真的確定要刪除嗎？\n\n請確認！"; 
+  if (confirm(msg)==true){ 
+    $.ajax({
+        method: 'post',
+        data: {
+            "_token" : "{{ csrf_token() }}",
+            "_method": 'DELETE',
+        },
+        url: 'item/delete/'+id,
+        success: function (data) {
+            console.log("Success", data);
+            if (data['status'] == true) {
+                $(obj).closest('tr').fadeOut('slow');
+            }
+            // alert(data['msg']);
+        },
+        error: function (data) {
+            console.log("Error", data);
+        }
+    });
+  }else{ 
+    return false; 
+  } 
+} 
+    
+
+</script>
 @endsection

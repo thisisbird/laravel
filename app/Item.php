@@ -3,12 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Item extends Model
 {
     use Notifiable;
+    use SoftDeletes;
     // protected $table = 'admins';
     /**
      * The attributes that are mass assignable.
@@ -16,9 +16,11 @@ class Item extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'picture', 'price','shopping','description'
+        'name', 'picture', 'price', 'shopping', 'description',
     ];
-    protected $type = ['text','text','number','checkbox','textarea'];
+    protected $type = [
+        'text', 'text', 'number', 'checkbox', 'textarea',
+    ];
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -34,10 +36,13 @@ class Item extends Model
      */
     protected $casts = [
     ];
-    public function getCol(){
-        return array_combine($this->fillable,$this->type);
+    public function getCol()
+    {
+        // $fillable與$type數量要一致
+        return array_combine($this->fillable, $this->type);
     }
-    public function validator($req,$id = null){
+    public function validator($req, $id = null)
+    {
         $rules = array(
             'name' => 'required',
             'price' => 'required|numeric',

@@ -19,14 +19,14 @@ class ItemController extends Controller
     public function __construct(Item $m)
     {
         $this->model = $m;
-        $this->redirect = '/admin/item';
+        $this->redirect = '/admin/item';//新增修改成功後轉跳
     }
 
     public function index()
     {
         $datas = $this->model->get()->toArray();
         $cols = $this->model->getCol();
-        return view('admin.item_index',compact('datas','cols'));
+        return view('admin.common_index',compact('datas','cols'));
     }
 
     /**
@@ -46,7 +46,7 @@ class ItemController extends Controller
             return redirect($this->redirect)->with('msg','success');
         }
         $cols = $this->model->getCol();
-        return view('admin.item_form',compact('cols'));
+        return view('admin.common_form',compact('cols'));
     }
 
 
@@ -70,7 +70,7 @@ class ItemController extends Controller
         }
         $cols = $this->model->getCol();
         $data = $this->model->findOrFail($id)->toArray();
-        return view('admin.item_form',compact('cols','data'));
+        return view('admin.common_form',compact('cols','data'));
     }
 
     /**
@@ -81,7 +81,13 @@ class ItemController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $find = $this->model->find($id);
+        if($find){
+            $find->delete();
+            return response()->json(['status'=>true,'msg'=>'success'], 200);
+        }else{
+            return response()->json(['status'=>false,'msg'=>'fail'], 200);
+        }
     }
     
     

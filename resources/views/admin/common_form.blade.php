@@ -4,6 +4,12 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <a href="#" class="btn btn-primary btn-icon-split btn-sm" onclick="window.history.back()">
+              <span class="icon text-white-50">
+                <i class="fas fa-arrow-left"></i>
+              </span>
+              <span class="text">上一頁</span>
+            </a>
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
           </div>
@@ -53,9 +59,9 @@
                 @endforeach
               </div>
                 @if($errors->first())
-                    <span class="text-danger">{{$errors->first() ?? 'afaffaf'}}</span>
+                    <span class="text-danger">{{$errors->first() ?? ''}}</span>
                 @endif
-              <button type="submit" class="btn btn-primary">Sign in</button>
+              <button type="submit" class="btn btn-primary">go</button>
             </form>
         </div>
 @endsection
