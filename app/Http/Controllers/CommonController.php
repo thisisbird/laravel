@@ -13,19 +13,24 @@ class CommonController extends Controller
      * @return \Illuminate\Http\Response
      */
     protected $model;
-    protected $redirect;
+    protected $cols;
+    protected $redirect = '/admin/item';
+    protected $title = 'Common';
+    protected $view;
 
     public function __construct($m)
     {
         $this->model = $m;
-        // $this->redirect = '/admin/item';//新增修改成功後轉跳
+        $this->cols = $m->getCol();
     }
    
     public function commonIndex()
     {
         $datas = $this->model->get()->toArray();
-        $cols = $this->model->getCol();
-        return view('admin.common_index',compact('datas','cols'));
+        $this->view = $this->view ?? 'admin.common_index';
+        return view($this->view,compact('datas'))
+        ->with('cols',$this->cols)
+        ->with('title',$this->title);
     }
 
     /**
@@ -44,8 +49,10 @@ class CommonController extends Controller
             $this->model->create($o_req);
             return redirect($this->redirect)->with('msg','success');
         }
-        $cols = $this->model->getCol();
-        return view('admin.common_form',compact('cols'));
+        $this->view = $this->view ?? 'admin.common_form';
+        return view($this->view)
+        ->with('cols',$this->cols)
+        ->with('title',$this->title);
     }
 
 
@@ -67,9 +74,11 @@ class CommonController extends Controller
             $this->model->findOrFail($id)->update($o_req);
             return redirect($this->redirect)->with('msg','success');
         }
-        $cols = $this->model->getCol();
+        $this->view = $this->view ?? 'admin.common_form';
         $data = $this->model->findOrFail($id)->toArray();
-        return view('admin.common_form',compact('cols','data'));
+        return view($this->view,compact('data'))
+        ->with('cols',$this->cols)
+        ->with('title',$this->title);
     }
 
     /**

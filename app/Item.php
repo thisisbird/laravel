@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Item extends Model
 {
     use SoftDeletes;
@@ -14,10 +15,10 @@ class Item extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'picture', 'price', 'shopping', 'description',
+        'name', 'picture', 'price', 'class', 'shopping', 'description',
     ];
     protected $type = [
-        'text', 'text', 'number', 'checkbox', 'textarea',
+        'text', 'text', 'number', 'option', 'checkbox', 'textarea',
     ];
     /**
      * The attributes that should be hidden for arrays.
@@ -38,6 +39,9 @@ class Item extends Model
     {
         // $fillable與$type數量要一致
         return array_combine($this->fillable, $this->type);
+    }
+    public static function classOption(){
+        return [1=>'大',2=>'中',3=>'小'];
     }
     public function validator($req, $id = null)
     {

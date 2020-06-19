@@ -1,0 +1,3 @@
+ALTER TABLE `admins` ADD COLUMN `deleted_at` TIMESTAMP NULL DEFAULT NULL AFTER `updated_at`;
+
+ALTER TABLE `items` ADD COLUMN `class` INT NULL DEFAULT NULL AFTER `description`;

@@ -10,7 +10,7 @@
               </span>
               <span class="text">上一頁</span>
             </a>
-            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+            <h1 class="h3 mb-0 text-gray-800">{{$title}}</h1>
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
           </div>
 
@@ -47,14 +47,18 @@
                             <textarea class="form-control" id="{{$col}}" name="{{$col}}" rows="3">{{ $data[$col] ?? old($col) }}</textarea>
                           </div>
                           @break
+                      @case('option')
+                          <div class="form-group col-md-6">
+                            <label for="inputState">{{$col}}</label>
+                            <select id="inputState" class="form-control" name="{{$col}}">
+                              @foreach (App\Item::classOption() as $key => $option)
+                                <option {{@$data[$col] == $key ? 'selected' : (old($col) == $key? 'selected' : '')}} value="{{$key}}">{{$option}}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          @break
                       @default
-                        <div class="form-group col-md-6">
-                          <label for="inputState">State</label>
-                          <select id="inputState" class="form-control">
-                            <option selected>Choose...</option>
-                            <option>...</option>
-                          </select>
-                        </div>
+                        
                   @endswitch
                 @endforeach
               </div>

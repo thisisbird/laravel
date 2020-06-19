@@ -22,18 +22,21 @@ class ItemController extends CommonController
         $this->redirect = '/admin/item';//新增修改成功後轉跳
     }
 
-    public function index()
+    public function index(Item $m)
     {
+        $this->title = '商品列';
         return $this->commonIndex();
     }
 
     public function create(Request $request)
     {
+        $this->title = '商品新增';
         return $this->commonCreate($request);
     }
 
     public function update(Request $request,$id)
     {
+        $this->title = '商品修改';
         return $this->commonUpdate($request,$id);
     }
 
