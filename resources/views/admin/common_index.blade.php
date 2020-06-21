@@ -41,7 +41,7 @@
             @foreach ($datas as $data)
               <tr>
                 @foreach ($cols as $col=>$type)
-                  <td>{{$data[$col]}}</td>
+                  <td>{{@$data[$col]}}</td>
                 @endforeach
                 <th>
                   <a href="item/update/{{$data['id']}}" class="btn btn-warning btn-circle btn-sm">

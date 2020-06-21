@@ -40,8 +40,9 @@ class Item extends Model
         // $fillable與$type數量要一致
         return array_combine($this->fillable, $this->type);
     }
-    public static function classOption(){
-        return [1=>'大',2=>'中',3=>'小'];
+    public function colOption($col){
+         $option = ['class'=>[1=>'大',2=>'中',3=>'小']];
+         return $option[$col];
     }
     public function validator($req, $id = null)
     {

@@ -51,7 +51,7 @@
                           <div class="form-group col-md-6">
                             <label for="inputState">{{$col}}</label>
                             <select id="inputState" class="form-control" name="{{$col}}">
-                              @foreach (App\Item::classOption() as $key => $option)
+                              @foreach ($model->colOption($col) as $key => $option)
                                 <option {{@$data[$col] == $key ? 'selected' : (old($col) == $key? 'selected' : '')}} value="{{$key}}">{{$option}}</option>
                               @endforeach
                             </select>

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CommonController extends Controller
+abstract class CommonController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,6 +29,7 @@ class CommonController extends Controller
         $datas = $this->model->get()->toArray();
         $this->view = $this->view ?? 'admin.common_index';
         return view($this->view,compact('datas'))
+        ->with('model',$this->model)
         ->with('cols',$this->cols)
         ->with('title',$this->title);
     }
@@ -51,6 +52,7 @@ class CommonController extends Controller
         }
         $this->view = $this->view ?? 'admin.common_form';
         return view($this->view)
+        ->with('model',$this->model)
         ->with('cols',$this->cols)
         ->with('title',$this->title);
     }
@@ -77,6 +79,7 @@ class CommonController extends Controller
         $this->view = $this->view ?? 'admin.common_form';
         $data = $this->model->findOrFail($id)->toArray();
         return view($this->view,compact('data'))
+        ->with('model',$this->model)
         ->with('cols',$this->cols)
         ->with('title',$this->title);
     }
