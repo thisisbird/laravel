@@ -88,7 +88,7 @@
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">
-      <a class="nav-link" href="/admin/item">
+      <a class="nav-link" href="/admin2/item">
         <i class="fas fa-fw fa-table"></i>
         <span>Item</span></a>
     </li>
