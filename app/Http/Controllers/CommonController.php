@@ -14,8 +14,11 @@ abstract class CommonController extends Controller
      */
     protected $model;
     protected $cols;
-    protected $redirect = '/admin/item';
+    protected $prefix = '/admin/';
+    protected $redirect = 'item';
     protected $title = 'Common';
+    protected $data;
+    protected $datas;
     protected $view;
 
     public function __construct($m)
@@ -26,12 +29,14 @@ abstract class CommonController extends Controller
    
     public function commonIndex()
     {
-        $datas = $this->model->get()->toArray();
+        $this->datas = $this->datas ?? $this->model->get();
         $this->view = $this->view ?? 'admin.common_index';
-        return view($this->view,compact('datas'))
+        return view($this->view)
+        ->with('datas',$this->datas)
         ->with('model',$this->model)
         ->with('cols',$this->cols)
-        ->with('title',$this->title);
+        ->with('title',$this->title)
+        ->with('redirect',$this->redirect);
     }
 
     /**
@@ -48,7 +53,7 @@ abstract class CommonController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
             $this->model->create($o_req);
-            return redirect($this->redirect)->with('msg','success');
+            return redirect($this->prefix.$this->redirect)->with('msg','success');
         }
         $this->view = $this->view ?? 'admin.common_form';
         return view($this->view)
@@ -74,11 +79,12 @@ abstract class CommonController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
             $this->model->findOrFail($id)->update($o_req);
-            return redirect($this->redirect)->with('msg','success');
+            return redirect($this->prefix.$this->redirect)->with('msg','success');
         }
+        $this->data = $this->data ?? $this->model->findOrFail($id);
         $this->view = $this->view ?? 'admin.common_form';
-        $data = $this->model->findOrFail($id)->toArray();
-        return view($this->view,compact('data'))
+        return view($this->view)
+        ->with('data',$this->data)
         ->with('model',$this->model)
         ->with('cols',$this->cols)
         ->with('title',$this->title);

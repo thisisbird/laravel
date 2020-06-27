@@ -10,7 +10,7 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3">
       {{-- <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6> --}}
-      <a href="item/create" class="btn btn-primary btn-icon-split">
+      <a href="{{$redirect}}/create" class="btn btn-primary btn-icon-split">
         <span class="icon text-white-50">
           <i class="fas fa-plus"></i>
         </span>
@@ -44,7 +44,7 @@
                   <td>{{@$data[$col]}}</td>
                 @endforeach
                 <th>
-                  <a href="item/update/{{$data['id']}}" class="btn btn-warning btn-circle btn-sm">
+                  <a href="{{$redirect}}/update/{{$data['id']}}" class="btn btn-warning btn-circle btn-sm">
                     <i class="fas fa-pen"></i>
                   </a>
                   <a href="#" class="btn btn-danger btn-circle btn-sm" onclick="del(this,{{$data['id']}})">
@@ -78,7 +78,7 @@ function del(obj,id) {
             "_token" : "{{ csrf_token() }}",
             "_method": 'DELETE',
         },
-        url: 'item/delete/'+id,
+        url: '{{$redirect}}/delete/'+id,
         success: function (data) {
             console.log("Success", data);
             if (data['status'] == true) {

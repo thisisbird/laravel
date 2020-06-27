@@ -25,22 +25,23 @@
     <div class="sidebar-heading">
       Interface
     </div>
-
+    @foreach (App\AdminMenu::getMenu() as $menu)
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+      <a class="nav-link collapsed" href="{{$menu->path}}" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
         <i class="fas fa-fw fa-cog"></i>
-        <span>Components</span>
+        <span>{{$menu->title}}</span>
       </a>
-      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+      <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Custom Components:</h6>
-          <a class="collapse-item" href="buttons.html">Buttons</a>
-          <a class="collapse-item" href="cards.html">Cards</a>
+          @foreach ($menu->child as $menu2)
+            <a class="collapse-item active" href="{{$menu2->path}}">{{$menu2->title}}</a>
+          @endforeach
         </div>
       </div>
     </li>
-
+    @endforeach
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
@@ -88,7 +89,7 @@
 
     <!-- Nav Item - Tables -->
     <li class="nav-item">
-      <a class="nav-link" href="/admin2/item">
+      <a class="nav-link" href="/admin/item">
         <i class="fas fa-fw fa-table"></i>
         <span>Item</span></a>
     </li>

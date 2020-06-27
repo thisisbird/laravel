@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Item;
+use App\AdminMenu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CommonController;
 
-class ItemController extends CommonController
+class AdminMenuController extends CommonController
 {
     /**
      * Display a listing of the resource.
@@ -16,10 +16,10 @@ class ItemController extends CommonController
      */
     protected $redirect;
 
-    public function __construct(Item $m)
+    public function __construct(AdminMenu $m)
     {
         parent::__construct($m);
-        $this->redirect = 'item';//新增修改成功後轉跳
+        $this->redirect = 'admin_menu';//新增修改成功後轉跳
     }
 
     public function index()

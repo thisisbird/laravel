@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Item extends Model
+class AdminMenu extends Model
 {
     use SoftDeletes;
     // protected $table = 'admins';
@@ -15,10 +15,10 @@ class Item extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'picture', 'price', 'class', 'shopping', 'description',
+        'pid', 'title', 'path', 'role'
     ];
     protected $type = [
-        'text', 'text', 'number', 'option', 'checkbox', 'textarea',
+        'option', 'text', 'text', 'number',
     ];
     /**
      * The attributes that should be hidden for arrays.
@@ -41,17 +41,19 @@ class Item extends Model
         return array_combine($this->fillable, $this->type);
     }
     public function colOption($col){
-         $option = [
-             'class'=>[1=>'大',2=>'中',3=>'小']
+
+        $menu = self::pluck('title','id')->toArray();
+        $menu[null] = '主選單';
+        $option = [
+             'pid'=> $menu
             ];
          return $option[$col];
     }
     public function validator($req, $id = null)
     {
         $rules = array(
-            'name' => 'required',
-            'price' => 'required|numeric',
-            'shopping' => 'boolean',
+            'title' => 'required',
+            'path' => 'required',
         );
         $message = array(
             // 'sex.required' => '性別為必填',
@@ -61,5 +63,13 @@ class Item extends Model
         //     return $input->password != null;
         // });
         return $v;
+    }
+    public function child()
+    {
+        return $this->hasMany('App\AdminMenu', 'pid', 'id');
+    }
+
+    public static function getMenu(){
+        return AdminMenu::with('child')->where('pid',null)->get();
     }
 }
