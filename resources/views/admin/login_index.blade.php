@@ -73,7 +73,7 @@
                     <a class="small" href="forgot-password.html">Forgot Password?</a>
                   </div>
                   <div class="text-center">
-                    <a class="small" href="/admin2/register">Create an Account!</a>
+                    <a class="small" href="{{$register_url}}">Create an Account!</a>
                   </div>
                 </div>
               </div>

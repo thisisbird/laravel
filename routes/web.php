@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/login','UserController@showLogin')->name('login');
-Route::post('/login','UserController@login');
+Route::any('/login','Frontend\UserController@login');
+Route::any('/register','Frontend\UserController@create');
 
-Route::middleware('auth:web')->any('/logout','UserController@logout');
+Route::middleware('auth:web')->any('/logout','Frontend\UserController@logout');

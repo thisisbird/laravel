@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AdminController extends Controller
+abstract class CommonLoginController extends CommonController
 {
     /**
      * Display a listing of the resource.
@@ -14,39 +13,41 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     protected $model;
-
-    public function __construct(Admin $admin)
+    protected $guard;
+    protected $home_url;
+    protected $login_url;
+    protected $register_url;
+    
+    public function __construct($m)
     {
-        $this->model = $admin;
+        parent::__construct($m);
     }
-
+   
     public function login(Request $request){
         if ($request->isMethod('post')) {
             $remember = @$request->remember == 'on' ? true : false;
-            if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password],$remember)) {
+            if (Auth::guard($this->guard)->attempt(['email' => $request->email, 'password' => $request->password],$remember)) {
                 // 認證通過...
-                return redirect('admin/dashboard');
+                return redirect($this->home_url);
             }else{
                 $msg = ['email or password wrong'];
                 return redirect()->back()->withErrors($msg)->withInput();
             }
         }
 
-        if(Auth::guard('admin')->check()){
-            return redirect()->intended('admin/dashboard');
+        if(Auth::guard($this->guard)->check()){
+            return redirect()->intended($this->home_url);
         }
-        return view('admin.admin_login');
+        return view('admin.login_index')
+        ->with('register_url',$this->register_url);
     }
     public function logout(Request $req){
-        Auth::guard('admin')->logout();
-        return redirect('admin/login');
+        Auth::guard($this->guard)->logout();
+        return redirect($this->login_url);
     }
 
 
-    public function index()
-    {
-        return view('admin.admin_index');
-    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -57,16 +58,17 @@ class AdminController extends Controller
     {
         if ($request->isMethod('post')) {
             $o_req = $request->request->all();
-            $validator = $this->validator($o_req);
+            $validator = $this->model->validator($o_req);
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
             $o_req['password'] = bcrypt($o_req['password']);
             $this->model->create($o_req);
-            return redirect('admin/login')->with('msg','success');
+            return redirect($this->login_url)->with('msg','success');
         }
         $cols = $this->model->getCol();
-        return view('admin.register',compact('cols'));
+        return view('admin.login_form',compact('cols'))
+        ->with('login_url',$this->login_url);
     }
 
 
@@ -81,7 +83,7 @@ class AdminController extends Controller
     {
         if ($request->isMethod('post')) {
             $o_req = $request->request->all();
-            $validator = $this->validator($o_req,$id);
+            $validator = $this->model->validator($o_req,$id);
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
@@ -91,7 +93,7 @@ class AdminController extends Controller
                 unset($o_req['password']);
             }
             $this->model->findOrFail($id)->update($o_req);
-            return redirect('admin/login')->with('msg','success');
+            return redirect($this->login_url)->with('msg','success');
         }
         $cols = $this->model->getCol();
         $data = $this->model->findOrFail($id)->toArray();
@@ -107,21 +109,6 @@ class AdminController extends Controller
     public function destroy($id)
     {
         //
-    }
-    function validator($req,$id = null){
-        $rules = array(
-            'name' => 'required',
-            'email' => 'required|email|unique:admins,email,'.$id,//unique:table,欄位,排除的id
-        );
-        $message = array(
-            'sex.required' => '性別為必填',
-        );
-        $v = \Validator::make($req, $rules, $message);
-        $v->sometimes('password', 'confirmed|required|between:6,12', function($input) {
-            return $input->password != null;
-        });
-        return $v;
-       
     }
     
 }

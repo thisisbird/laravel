@@ -42,8 +42,8 @@ class AdminMenu extends Model
     }
     public function colOption($col){
 
-        $menu = self::pluck('title','id')->toArray();
         $menu[null] = '主選單';
+        $menu = $menu + self::pluck('title','id')->toArray();
         $option = [
              'pid'=> $menu
             ];

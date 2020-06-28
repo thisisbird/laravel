@@ -39,4 +39,19 @@ class Admin extends Authenticatable
     public function getCol(){
         return array_combine($this->fillable,$this->type);
     }
+    function validator($req,$id = null){
+        $rules = array(
+            'name' => 'required',
+            'email' => 'required|email|unique:admins,email,'.$id,//unique:table,欄位,排除的id
+        );
+        $message = array(
+            'sex.required' => '性別為必填',
+        );
+        $v = \Validator::make($req, $rules, $message);
+        $v->sometimes('password', 'confirmed|required|between:6,12', function($input) {
+            return $input->password != null;
+        });
+        return $v;
+       
+    }
 }
