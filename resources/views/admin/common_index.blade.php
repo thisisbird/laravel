@@ -29,28 +29,20 @@
                 <th>tool</th>
             </tr>
           </thead>
-          <tfoot>
-            <tr>
-              @foreach ($cols as $col=>$type)
-                <th>{{$col}}</th>
-              @endforeach
-                <th>tool</th>
-            </tr>
-          </tfoot>
           <tbody>
             @foreach ($datas as $data)
               <tr>
                 @foreach ($cols as $col=>$type)
-                  <td>{{@$data[$col]}}</td>
+                  <td>{!!@$data[$col]!!}</td>
                 @endforeach
-                <th>
+                <td>
                   <a href="{{$redirect}}/update/{{$data['id']}}" class="btn btn-warning btn-circle btn-sm">
                     <i class="fas fa-pen"></i>
                   </a>
                   <a href="#" class="btn btn-danger btn-circle btn-sm" onclick="del(this,{{$data['id']}})">
                     <i class="fas fa-trash"></i>
                   </a>
-                </th>
+                </td>
               </tr>
             @endforeach
           </tbody>

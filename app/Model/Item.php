@@ -1,11 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class AdminMenu extends Model
+class Item extends Model
 {
     use SoftDeletes;
     // protected $table = 'admins';
@@ -15,10 +15,10 @@ class AdminMenu extends Model
      * @var array
      */
     protected $fillable = [
-        'pid', 'title', 'path', 'role'
+        'name', 'picture', 'price', 'class', 'shopping', 'description',
     ];
     protected $type = [
-        'option', 'text', 'text', 'number',
+        'text', 'text', 'number', 'option', 'checkbox', 'textarea',
     ];
     /**
      * The attributes that should be hidden for arrays.
@@ -26,6 +26,7 @@ class AdminMenu extends Model
      * @var array
      */
     protected $hidden = [
+        'description'
     ];
 
     /**
@@ -35,25 +36,29 @@ class AdminMenu extends Model
      */
     protected $casts = [
     ];
-    public function getCol()
+    public function getCol($all = true)
     {
         // $fillable與$type數量要一致
-        return array_combine($this->fillable, $this->type);
+        $get_col =  array_combine($this->fillable, $this->type);
+        if($all) return $get_col;
+        
+        foreach ($this->hidden as $value) {
+            unset($get_col[$value]);
+        }
+        return $get_col;
     }
     public function colOption($col){
-
-        $menu[null] = '主選單';
-        $menu = $menu + self::pluck('title','id')->toArray();
-        $option = [
-             'pid'=> $menu
+         $option = [
+             'class'=>[1=>'大',2=>'中',3=>'小']
             ];
          return $option[$col];
     }
     public function validator($req, $id = null)
     {
         $rules = array(
-            'title' => 'required',
-            'path' => 'required',
+            'name' => 'required',
+            'price' => 'required|numeric',
+            'shopping' => 'boolean',
         );
         $message = array(
             // 'sex.required' => '性別為必填',
@@ -63,13 +68,5 @@ class AdminMenu extends Model
         //     return $input->password != null;
         // });
         return $v;
-    }
-    public function child()
-    {
-        return $this->hasMany('App\AdminMenu', 'pid', 'id');
-    }
-
-    public static function getMenu(){
-        return AdminMenu::with('child')->where('pid',null)->get();
     }
 }

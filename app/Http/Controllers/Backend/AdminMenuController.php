@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\AdminMenu;
+use App\Model\AdminMenu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CommonController;

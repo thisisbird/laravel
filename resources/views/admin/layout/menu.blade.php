@@ -25,7 +25,7 @@
     <div class="sidebar-heading">
       Interface
     </div>
-    @foreach (App\AdminMenu::getMenu() as $menu)
+    @foreach (App\Model\AdminMenu::getMenu() as $menu)
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
       <a class="nav-link collapsed" href="{{$menu->path}}" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">

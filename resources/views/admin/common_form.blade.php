@@ -43,8 +43,8 @@
                           @break
                       @case('textarea')
                           <div class="form-group col-md-12">
-                            <label for="{{$col}}">{{$col}}</label>
-                            <textarea class="form-control" id="{{$col}}" name="{{$col}}" rows="3">{{ $data[$col] ?? old($col) }}</textarea>
+                            <label for="summernote">{{$col}}</label>
+                            <textarea id="summernote" class="form-control" name="{{$col}}" rows="3">{{ $data[$col] ?? old($col) }}</textarea>
                           </div>
                           @break
                       @case('option')
@@ -68,4 +68,19 @@
               <button type="submit" class="btn btn-primary">go</button>
             </form>
         </div>
+@endsection
+@section('footjs')
+<link href="/admin2/css/summernote.min.css" rel="stylesheet">
+<script src="/admin2/js/summernote.min.js"></script>
+<script src="/admin2/css/lang/summernote-zh-TW.js"></script> <script>
+      $(document).ready(function() {
+        $('#summernote').summernote({
+          lang: 'zh-TW', // default: 'en-US'
+          height: 300,                 // set editor height
+          minHeight: null,             // set minimum height of editor
+          maxHeight: null,             // set maximum height of editor
+          focus: true  
+        });
+      });
+    </script>
 @endsection
