@@ -16,7 +16,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::any('/login','Frontend\UserController@login');
+Route::any('/login','Frontend\UserController@login')->name('login');
 Route::any('/register','Frontend\UserController@create');
 
 Route::middleware('auth:web')->any('/logout','Frontend\UserController@logout');
+
+Route::group(['middleware' => ['auth:web']], function () {
+    Route::any('/test2','Frontend\TestController@index');
+    
+});
+Route::get('/test','Frontend\TestController@index');
