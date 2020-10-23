@@ -16,4 +16,9 @@
 1. yarn build 極致打包(只有包用到的class)
 2. yarn prod 打包tailwind所有css(容量很大)
 
-## 
+## Vue安裝
+
+composer require laravel/ui "^2.0"
+
+php artisan ui vue --auth
+

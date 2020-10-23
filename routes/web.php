@@ -26,3 +26,12 @@ Route::group(['middleware' => ['auth:web']], function () {
     
 });
 Route::get('/test','Frontend\TestController@index');
+Route::get('/test2', function () {
+    return view('tailwind2');
+});
+Route::get('/todo', function () {
+    return view('todo');
+});
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
