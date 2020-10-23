@@ -22,3 +22,5 @@ composer require laravel/ui "^2.0"
 
 php artisan ui vue --auth
 
+建立model controller migrate
+php artisan make:model Todo -mcr
