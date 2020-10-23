@@ -15,7 +15,7 @@ class TodoController extends Controller
     public function index()
     {
         //
-        dd(123);
+        return Todo::latest()->get();
     }
 
     /**
@@ -37,6 +37,10 @@ class TodoController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
+        $this->validate($request,
+        ['title'=>'required'],
+        ['title.required' => 'Todo必填!!']
+        );
         Todo::create($request->all());
     }
 
