@@ -37335,6 +37335,10 @@ body {
   background: radial-gradient(circle, #4aaff4 32%, #024069 100%);
 }
 
+.todo svg:hover {
+  cursor: pointer;
+}
+
 @media (min-width: 640px){
   .sm\:container{
     width: 100%;

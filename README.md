@@ -24,3 +24,9 @@ php artisan ui vue --auth
 
 建立model controller migrate
 php artisan make:model Todo -mcr
+
+## route列表
+
+|功能|路徑|
+|---|---|
+|todo list (vue)|/todo|

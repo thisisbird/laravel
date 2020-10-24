@@ -1,9 +1,9 @@
 <template>
-    <div class="w-25">
+    <div class="w-11/12 md:w-1/2 lg:w-1/3">
         <form @submit.prevent="saveData">
         <div class="input-group mb-3 w-full">
             <input v-model="form.title" :class="{'is-invalid':form.errors.has('title')}" 
-            type="text" class="form-control" placeholder="Recipient's username" 
+            type="text" class="form-control" placeholder="todo something" 
             aria-label="Recipient's username" aria-describedby="basic-addon2" @keydown="form.errors.clear('title')">
             <div class="input-group-append">
                 <button class="btn btn-success" type="submit">Add this to your list</button>
@@ -12,10 +12,10 @@
             <span class=" text-danger pt-3" v-if="form.errors.has('title')" v-text="form.errors.get('title')"></span>
         
         </form>
-        <div class="w-full">
+        <div class="w-full todo">
             <div v-for="todo in todos" :key="todo.id" class="w-full flex items-center p-3 bg-white border-b-2">
                 <span class="mr-2">
-                    <svg v-if="todo.completed == false" v-on:click="toggleTodo(todo)" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle" width="36" height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#009688" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <svg v-if="todo.completed == false" v-on:click="toggleTodo(todo)" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle" width="36" height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#CDDC39" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                     <circle cx="12" cy="12" r="9" />
                     </svg>
@@ -25,27 +25,27 @@
                     <path d="M9 12l2 2l4 -4" />
                     </svg>
                 </span>
-                <div class=" font-weight-bolder">
-                    <span>{{todo.title}}</span>
-                    <input type="text">
+                <div class="font-weight-bolder">
+                    <span v-if="editmode== false || editmode != todo.id">{{todo.title}}</span>
+                    <input v-if="editmode == todo.id" v-model="todo.title" type="text" class=" border-b-2">
                 </div>
                 <div class="ml-auto mr-2 flex items-center">
                     <span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="36" height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#009688" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <svg v-on:click="editmode = todo.id" v-if="editmode != todo.id" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="36" height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#CDDC39" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                         <path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
                         <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
                         <line x1="16" y1="5" x2="19" y2="8" />
                         </svg>
 
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-checkbox" width="36" height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#009688" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <svg v-if="editmode == todo.id" v-on:click="updateTodo(todo)" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-checkbox" width="36" height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#009688" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                         <polyline points="9 11 12 14 20 6" />
                         <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
                         </svg>
                     </span>
                     <span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="36" height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#009688" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <svg v-on:click="deleteTodo(todo)" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="36" height="36" viewBox="0 0 24 24" stroke-width="1.5" stroke="#E91E63" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                         <line x1="4" y1="7" x2="20" y2="7" />
                         <line x1="10" y1="11" x2="10" y2="17" />
@@ -64,6 +64,7 @@
     export default {
         data(){
             return {
+                editmode:false,
                 todos:'',
                 form: new Form({
                     title: '',
@@ -71,6 +72,28 @@
             }
         },
         methods:{
+            deleteTodo(e){
+                let data = new FormData();
+                data.append('_method','DELETE')
+                data.append('title',e.title)
+                axios.post('/api/todo/'+e.id,data).then( (res) => {
+                    this.todos = res.data
+                }).catch((error)=>{
+                    this.form.errors.record(error.response.data.errors)
+                    console.log(error.response);
+                })
+            },
+            updateTodo(e){
+                this.editmode = false
+                let data = new FormData();
+                data.append('_method','PATCH')
+                data.append('title',e.title)
+                axios.post('/api/todo/'+e.id,data).then( () => {
+                }).catch((error)=>{
+                    this.form.errors.record(error.response.data.errors)
+                    console.log(error.response);
+                })
+            },
             toggleTodo(e){
                 e.completed = !e.completed
                 let data = new FormData();
@@ -96,7 +119,6 @@
                     this.form.reset();
                     this.getTodo();
                 }).catch((error)=>{
-
                     this.form.errors.record(error.response.data.errors)
                     console.log(error.response);
                 })
