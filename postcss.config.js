@@ -6,6 +6,7 @@ module.exports = {
       require('@fullhuman/postcss-purgecss')({
           content:[
             // './src/**/*.vue',
+            './resources/js/components/*.vue',
             './resources/views/*.*',
             'resources/views/*.php',
           ],
