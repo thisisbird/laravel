@@ -1,3 +1,9 @@
+## 升級composer2
+composer self-update --2
+退回版本
+composer self-update --rollback
+
+
 ## 安裝tailwind
 
 安裝
@@ -24,6 +30,9 @@ php artisan ui vue --auth
 
 建立model controller migrate
 php artisan make:model Todo -mcr
+
+## Vue-route安裝
+npm install vue-router
 
 ## route列表
 

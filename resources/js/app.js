@@ -28,6 +28,10 @@ Vue.component('todo-component', require('./components/TodoComponent.vue').defaul
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+import VueRouter from 'vue-router'; //ES6 Module引入
+import router from './routes';
+Vue.use(VueRouter);
 const app = new Vue({
     el: '#app',
+    router: new VueRouter(router)
 });
