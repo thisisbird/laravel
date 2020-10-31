@@ -1,10 +1,14 @@
 
-import NotFound from './components/Home';
+import Home from './components/Home';
 
 let routes = [
     {
         path: '*',
-        component: NotFound
+        component: Home
+    },
+    {
+        path:'/todo', //路徑
+        component:require('./components/TodoComponent.vue').default//Component
     },
     {
         path:'/home', //路徑
@@ -13,7 +17,8 @@ let routes = [
     {
         path:'/about',
         component:require('./components/About.vue').default
-    }//之後新增路由皆可使用{path:'', component:''}
+    },//之後新增路由皆可使用{path:'', component:''}
+    
 ];
 export default{
     mode :'history', //因為Vue router 會自動產生hashtag(#)，俗果你覺得礙事可以加入這行。

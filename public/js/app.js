@@ -53410,12 +53410,12 @@ window.Form = _form__WEBPACK_IMPORTED_MODULE_0__["default"];
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('todo-component', __webpack_require__(/*! ./components/TodoComponent.vue */ "./resources/js/components/TodoComponent.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+// Vue.component('todo-component', require('./components/TodoComponent.vue').default);
 
  //ES6 Module引入
 
@@ -53946,6 +53946,11 @@ __webpack_require__.r(__webpack_exports__);
 var routes = [{
   path: '*',
   component: _components_Home__WEBPACK_IMPORTED_MODULE_0__["default"]
+}, {
+  path: '/todo',
+  //路徑
+  component: __webpack_require__(/*! ./components/TodoComponent.vue */ "./resources/js/components/TodoComponent.vue")["default"] //Component
+
 }, {
   path: '/home',
   //路徑

@@ -36,6 +36,7 @@ npm install vue-router
 
 ## route列表
 
-|功能|路徑|
+|路徑|功能|
 |---|---|
-|todo list (vue)|/todo|
+|/todo|todo list (vue)|
+|/test|tailwind練習|

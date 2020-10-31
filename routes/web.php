@@ -13,11 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::any('/login','Frontend\UserController@login')->name('login');
-Route::any('/register','Frontend\UserController@create');
+
+Route::any('/login2','Frontend\UserController@login')->name('login');
+Route::any('/register2','Frontend\UserController@create');
 
 Route::middleware('auth:web')->any('/logout','Frontend\UserController@logout');
 
@@ -29,13 +27,20 @@ Route::get('/test','Frontend\TestController@index');
 Route::get('/test2', function () {
     return view('tailwind2');
 });
-Route::get('/todo', function () {
-    return view('todo');
-});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/{any}', function () {
+// Route::get('/{any}', function () {
+//     return view('todo');
+// })->where('any','.*');
+Route::get('/', function () {
     return view('todo');
-})->where('any','.*');
+});
+Route::get('/todo', function () {
+    return view('todo');
+});
+Route::get('/about', function () {
+    return view('todo');
+});
