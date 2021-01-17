@@ -5,6 +5,7 @@ namespace App\Model;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Validator;
 
 class User extends Authenticatable
 {
@@ -50,7 +51,7 @@ class User extends Authenticatable
         $message = array(
             'sex.required' => '性別為必填',
         );
-        $v = \Validator::make($req, $rules, $message);
+        $v = Validator::make($req, $rules, $message);
         $v->sometimes('password', 'confirmed|required|between:6,12', function($input) {
             return $input->password != null;
         });

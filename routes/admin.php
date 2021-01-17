@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::any('/login','Backend\AdminController@login')->name('admin.login');
 Route::any('/register','Backend\AdminController@create');
+Route::any('/upload','Backend\AdminController@upload');
 
 //後台登入
 Route::group(['middleware' => ['auth.admin:admin']], function () {

@@ -29,10 +29,12 @@ window.Form = Form
 
  
 // Vue.component('todo-component', require('./components/TodoComponent.vue').default);
-
+import axios from 'axios';
+import VueAxios from 'vue-axios';
 import VueRouter from 'vue-router'; //ES6 Module引入
 import router from './routes';
 Vue.use(VueRouter);
+Vue.use(VueAxios,axios);
 const app = new Vue({
     el: '#app',
     router: new VueRouter(router)

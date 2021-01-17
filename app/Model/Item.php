@@ -4,6 +4,7 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Validator;
 
 class Item extends Model
 {
@@ -63,7 +64,7 @@ class Item extends Model
         $message = array(
             // 'sex.required' => '性別為必填',
         );
-        $v = \Validator::make($req, $rules, $message);
+        $v = Validator::make($req, $rules, $message);
         // $v->sometimes('password', 'confirmed|required|between:6,12', function($input) {
         //     return $input->password != null;
         // });

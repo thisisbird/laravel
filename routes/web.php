@@ -44,3 +44,6 @@ Route::get('/todo', function () {
 Route::get('/about', function () {
     return view('todo');
 });
+Route::get('/map', function () {
+    return view('todo');
+});

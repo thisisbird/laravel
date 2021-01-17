@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 abstract class CommonController extends Controller
 {
     /**
@@ -106,5 +105,19 @@ abstract class CommonController extends Controller
         }
     }
     
-    
+    public function upload(Request $request)
+    {
+        if ($request->hasFile('upload')) {
+            //  Let's do everything here
+            if ($request->file('upload')->isValid()) {
+
+                $extension = $request->upload->extension();
+                $filename = date('YmdHis')."-".rand(1000,9999).".".$extension;
+                $request->upload->storeAs('images', $filename);
+                $data['imageUrl'] = 'images/'.$filename;
+                return response()->json($data, 200);
+            }
+        }
+        abort(500, 'Could not upload image :(');
+    }
 }

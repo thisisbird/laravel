@@ -44,7 +44,7 @@
                       @case('textarea')
                           <div class="form-group col-md-12">
                             <label for="summernote">{{$col}}</label>
-                            <textarea id="summernote" class="form-control" name="{{$col}}" rows="3">{{ $data[$col] ?? old($col) }}</textarea>
+                            <textarea id="summernote" class="form-control" name="{{$col}}" rows="3">{!! $data[$col] ?? old($col) !!}</textarea>
                           </div>
                           @break
                       @case('option')
@@ -74,13 +74,40 @@
 <script src="/admin2/js/summernote.min.js"></script>
 <script src="/admin2/css/lang/summernote-zh-TW.js"></script> <script>
       $(document).ready(function() {
-        $('#summernote').summernote({
-          lang: 'zh-TW', // default: 'en-US'
-          height: 300,                 // set editor height
-          minHeight: null,             // set minimum height of editor
-          maxHeight: null,             // set maximum height of editor
-          focus: true  
-        });
+
+
+        $('#summernote').summernote(
+          { height: 300,
+            lang: 'zh-TW', // default: 'en-US'
+            // minHeight: null,             // set minimum height of editor
+            // maxHeight: null,             // set maximum height of editor
+            // focus: true,
+            callbacks: {
+              onImageUpload: function(files) {
+                  console.log(files);
+                  imageUpload(files).done((data, textStatus, jqXHR)=>{
+                    let url = "/uploads/"+data.imageUrl
+                    $('#summernote').summernote('insertImage', url, 'newimage');
+                  })
+              },
+            }
+          });
+
+          function imageUpload(files){
+          let formData = new FormData();
+          formData.append('upload', files[0]);
+          console.log(formData,123);
+            return $.ajax({
+                    type: "POST", 
+                    url: '/admin/upload',
+                    data:formData,
+                    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', "{{csrf_token()}}")},
+                    cache       : false,
+                    contentType : false,
+                    processData : false,
+              
+                  });
+        }
       });
     </script>
 @endsection

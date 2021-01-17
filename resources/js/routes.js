@@ -15,6 +15,10 @@ let routes = [
         component:require('./components/Home.vue').default//Component
     },
     {
+        path:'/map', //路徑
+        component:require('./components/MapComponent.vue').default//Component
+    },
+    {
         path:'/about',
         component:require('./components/About.vue').default
     },//之後新增路由皆可使用{path:'', component:''}
