@@ -96,12 +96,11 @@
           function imageUpload(files){
           let formData = new FormData();
           formData.append('upload', files[0]);
-          console.log(formData,123);
             return $.ajax({
                     type: "POST", 
                     url: '/admin/upload',
                     data:formData,
-                    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', "{{csrf_token()}}")},
+                    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
                     cache       : false,
                     contentType : false,
                     processData : false,

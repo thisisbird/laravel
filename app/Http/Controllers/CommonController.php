@@ -29,6 +29,7 @@ abstract class CommonController extends Controller
     {
         $this->datas = $this->datas ?? $this->model->get();
         $this->view = $this->view ?? 'admin.common_index';
+        $this->cols = $this->model->getCol(false);
         return view($this->view)
         ->with('datas',$this->datas)
         ->with('model',$this->model)

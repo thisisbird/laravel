@@ -37,4 +37,15 @@ Route::group(['middleware' => ['auth.admin:admin']], function () {
     Route::any('/admin_menu/update/{id}','Backend\AdminMenuController@update');
     Route::delete('/admin_menu/delete/{id}','Backend\AdminMenuController@destroy');
 
+    Route::get('/article','Backend\ArticleController@index');
+    Route::any('/article/create','Backend\ArticleController@create');
+    Route::any('/article/update/{id}','Backend\ArticleController@update');
+    Route::delete('/article/delete/{id}','Backend\ArticleController@destroy');
+
+
+    Route::get('/article_block','Backend\ArticleBlockController@index');
+    Route::any('/article_block/create','Backend\ArticleBlockController@create');
+    Route::any('/article_block/update/{id}','Backend\ArticleBlockController@update');
+    Route::delete('/article_block/delete/{id}','Backend\ArticleBlockController@destroy');
+    
 });

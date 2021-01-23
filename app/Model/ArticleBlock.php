@@ -5,7 +5,7 @@ namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Validator;
-class AdminMenu extends Model
+class ArticleBlock extends Model
 {
     use SoftDeletes;
     // protected $table = 'admins';
@@ -15,10 +15,10 @@ class AdminMenu extends Model
      * @var array
      */
     protected $fillable = [
-        'pid', 'title', 'path', 'role'
+        'article_id','style', 'picture', 'description'
     ];
     protected $type = [
-        'option', 'text', 'text', 'number',
+        'number', 'text', 'text', 'text',
     ];
     /**
      * The attributes that should be hidden for arrays.
@@ -52,8 +52,8 @@ class AdminMenu extends Model
     public function validator($req, $id = null)
     {
         $rules = array(
-            'title' => 'required',
-            'path' => 'required',
+            'article_id' => 'required',
+            'description' => 'required',
         );
         $message = array(
             // 'sex.required' => '性別為必填',
@@ -64,12 +64,6 @@ class AdminMenu extends Model
         // });
         return $v;
     }
-    public function child()
-    {
-        return $this->hasMany('App\Model\AdminMenu', 'pid', 'id');
-    }
+    
 
-    public static function getMenu(){
-        return AdminMenu::with('child')->where('pid',null)->get();
-    }
 }
