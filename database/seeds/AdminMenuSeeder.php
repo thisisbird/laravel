@@ -36,5 +36,11 @@ class AdminMenuSeeder extends Seeder
             'title'=> '文章',
             'path' => 'admin/article'
         ]);
+        DB::table('admin_menus')->insert([
+            'id' => '5',
+            'pid'  => 1,
+            'title'=> '文章區塊',
+            'path' => 'admin/article_block'
+        ]);
     }
 }
