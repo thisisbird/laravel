@@ -19,7 +19,7 @@ class AdminController extends CommonLoginController
     public function __construct(Admin $m)
     {
         parent::__construct($m);
-        $this->guard = 'admin';
+        $this->guard = 'back';
         $this->login_url = '/admin/login';
         $this->home_url = '/admin';
         $this->register_url = '/admin/register';

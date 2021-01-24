@@ -19,7 +19,7 @@ Route::any('/register','Backend\AdminController@create');
 Route::any('/upload','Backend\AdminController@upload');
 
 //後台登入
-Route::group(['middleware' => ['auth.admin:admin']], function () {
+Route::group(['middleware' => ['auth.back:back']], function () {
 
     Route::any('/register/update/{id}','Backend\AdminController@update');
     Route::get('/dashboard','Backend\AdminController@index');
